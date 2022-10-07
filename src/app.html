@@ -110,7 +110,6 @@
         addToCart(name, index) {
           if (!this.cart[name]) this.cart[name] = 0
           this.cart[name] += this.inventory[index].quantity
-          console.log(this.cart)
         },
         toggleSidebar() {
           this.showSidebar = !this.showSidebar
@@ -133,13 +132,18 @@
             })
             return product.price.USD
           },
+          // calculateTotal() {
+          //   const names = Object.keys(this.cart)
+          //   const total = Object.values(this.cart).reduce((pre, curr, index) =>
+          //     pre + (curr * this.getPrice(names[index])), initialValue
+          //   );
+          //   return total
+          // }
           calculateTotal() {
-            console.log(this.cart);
-            const names = Object.keys(this.cart)
-            const total = Object.values(this.cart).reduce((acc, curr, index) => {
-              return acc + (curr * this.getPrice(names[index]))
-            })
-            return total
+            const total = Object.entries(this.cart).reduce((prv, curr) => {
+              return prv + (this.getPrice(curr[0]) * curr[1])
+            }, 0)
+            return total.toFixed(2)
           }
         },
         template: `
