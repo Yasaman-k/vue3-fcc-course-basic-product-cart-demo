@@ -88,7 +88,7 @@
 
     </main>
 
-    <sidebar v-if="showSidebar" :toggle="toggleSidebar" :cart="cart" :inventory="inventory" />
+    <sidebar v-if="showSidebar" :toggle="toggleSidebar" :cart="cart" :inventory="inventory" :remove="deleteFromCart" />
 
     <footer>
     </footer>
@@ -110,9 +110,13 @@
         addToCart(name, index) {
           if (!this.cart[name]) this.cart[name] = 0
           this.cart[name] += this.inventory[index].quantity
+          this.inventory[index].quantity = 0
         },
         toggleSidebar() {
           this.showSidebar = !this.showSidebar
+        },
+        deleteFromCart(name) {
+          delete this.cart[name]
         }
       },
       async mounted() {
@@ -122,7 +126,7 @@
       },
     })
       .component('sidebar', {
-        props: ['toggle', 'cart', 'inventory'],
+        props: ['toggle', 'cart', 'inventory', 'remove'],
         // computed: {
         // },
         methods: {
@@ -175,9 +179,9 @@
                       <td>{{ key }}</td>
                       <td>\${{ getPrice(key) }}</td>
                       <td class="center">{{ quantity }}</td>
-                      <td>\${{quantity * getPrice(key) }}</td>
+                      <td>\${{(quantity * getPrice(key)).toFixed(2) }}</td>
                       <td class="center">
-                        <button class="btn btn-light cart-remove">
+                        <button class="btn btn-light cart-remove" @click="remove(key)">
                           &times;
                         </button>
                       </td>
