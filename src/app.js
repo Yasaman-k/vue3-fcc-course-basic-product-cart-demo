@@ -7,6 +7,7 @@ createApp({
             cart: {}
         }
     },
+    // this option objects
     computed: {
         totalQuantity() {
             return Object.values(this.cart).reduce((prev, curr) => prev + curr, 0)
